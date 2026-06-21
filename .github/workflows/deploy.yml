@@ -31,25 +31,34 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      # 3. Configure Docker for Artifact Registry
+      # 3. Create Artifact Registry Repository if not exists
+      - name: Create Artifact Registry Repository if not exists
+        run: |
+          gcloud artifacts repositories describe ${{ env.REPO_NAME }} --location=${{ env.REGION }} || \
+          gcloud artifacts repositories create ${{ env.REPO_NAME }} \
+            --repository-format=docker \
+            --location=${{ env.REGION }} \
+            --description="Docker repository for EcoTrace CI/CD"
+
+      # 4. Configure Docker for Artifact Registry
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-      # 4. Build and Push Backend (FastAPI) Docker Image
+      # 5. Build and Push Backend (FastAPI) Docker Image
       - name: Build Backend Image
         run: docker build -t ${{ env.BACKEND_IMAGE }} -f backend/Dockerfile backend
 
       - name: Push Backend Image to Artifact Registry
         run: docker push ${{ env.BACKEND_IMAGE }}
 
-      # 5. Build and Push Frontend (Next.js) Docker Image
+      # 6. Build and Push Frontend (Next.js) Docker Image
       - name: Build Frontend Image
         run: docker build -t ${{ env.FRONTEND_IMAGE }} -f frontend/Dockerfile frontend
 
       - name: Push Frontend Image to Artifact Registry
         run: docker push ${{ env.FRONTEND_IMAGE }}
 
-      # 6. Deploy Backend to Cloud Run
+      # 7. Deploy Backend to Cloud Run
       - name: Deploy Backend to Cloud Run 
         run: |
           gcloud run deploy ${{ env.BACKEND_SERVICE }} \
@@ -60,7 +69,7 @@ jobs:
             --set-env-vars HOST="0.0.0.0" \
             --set-env-vars GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
 
-      # 7. Deploy Frontend to Cloud Run
+      # 8. Deploy Frontend to Cloud Run
       - name: Deploy Frontend to Cloud Run
         run: |
           gcloud run deploy ${{ env.FRONTEND_SERVICE }} \
