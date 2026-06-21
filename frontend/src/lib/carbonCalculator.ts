@@ -87,3 +87,12 @@ export async function calculateEmissions(
   const emissions = consumptionValue * factor;
   return Math.round(emissions * 100) / 100;
 }
+
+/**
+ * Clear the in-memory emission factor cache (used for unit tests)
+ */
+export function clearFactorCache() {
+  for (const key in factorCache) {
+    delete factorCache[key];
+  }
+}
