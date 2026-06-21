@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 import logging
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse

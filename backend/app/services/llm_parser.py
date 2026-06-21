@@ -1,6 +1,9 @@
 import json
 import logging
-import google.generativeai as genai
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import google.generativeai as genai
 from fastapi import HTTPException
 from backend.app.schemas import UtilityExtractionResponse
 from backend.app.config import settings
