@@ -8,11 +8,11 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: us-central1
-  REPO_NAME: cloud-run-source-repo
+  REPO_NAME: cloud-run-source-repo1
   BACKEND_SERVICE: ecotrace-backend
   FRONTEND_SERVICE: ecotrace-frontend
-  BACKEND_IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/cloud-run-source-repo/ecotrace-backend:${{ github.sha }}
-  FRONTEND_IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/cloud-run-source-repo/ecotrace-frontend:${{ github.sha }}
+  BACKEND_IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/cloud-run-source-repo1/ecotrace-backend:${{ github.sha }}
+  FRONTEND_IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/cloud-run-source-repo1/ecotrace-frontend:${{ github.sha }}
 
 jobs: 
   build-and-deploy:
